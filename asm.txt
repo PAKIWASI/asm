@@ -735,7 +735,7 @@ function that is gonna be called (callee) onto the stack from right to left. So 
                 func(100,200);
                 int var = 300;
                 return 0;
-}
+        }
 
 The value "b" and then "a" must be pushed onto the stack (right to left) before calling "func". After calling the function "func", callee (func)
 must save the previous stack frame pointer and create a new stack frame. Wait a minute! WTF? What's a stack frame? Oops! I forgot to tell you that. (:D)
@@ -1091,7 +1091,7 @@ content pointed at by it) and put it in EAX.
 
 
      In order to understand SHL or Shift Logical Left we need to use a number as an example and work with it. Imagine you have the instructions below
-which move the hex value of 10 (or 16 decimal) in EAX and then perform a SHL on EAX by 1:
+which move the hex value of 10 (or 16 decimal, 0b00010000) in EAX and then perform a SHL on EAX by 1:
 
      mov eax, 0x10
      shl eax, 1
