@@ -177,15 +177,15 @@
 ;    Higher addresses
 ;    ┌─────────────────┐
 ;    │  caller's frame │
-;    ├─────────────────┤ ← caller's RSP before CALL
+;    ├─────────────────┤  ← caller's RSP before CALL
 ;    │  return address │  ← CALL pushed this (8 bytes)
-;    ├─────────────────┤ ← our RBP points here (after push rbp + mov rbp,rsp)
+;    ├─────────────────┤  ← our RBP points here (after push rbp + mov rbp,rsp)
 ;    │  saved old RBP  │  ← we pushed this
 ;    ├─────────────────┤
 ;    │  local var 1    │  [rbp -  8]
 ;    │  local var 2    │  [rbp - 16]
 ;    │  ...            │
-;    ├─────────────────┤ ← RSP (after sub rsp, N)
+;    ├─────────────────┤  ← RSP (after sub rsp, N)
 ;    Lower addresses
 ;
 ; =============================================================================
@@ -697,3 +697,6 @@ _start:
     mov  rax, 60            ; syscall number: sys_exit
     mov  rdi, 0             ; exit code: 0 (success)
     syscall                 ; goodbye!
+
+
+
