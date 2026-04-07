@@ -41,11 +41,11 @@ print_num:
 
     ; --- special case: 0 ---
     test rdi, rdi
-    jnz  .divide_loop
+    jnz  .divide_loop   ; jump if test not zero
     mov  byte [rsp], '0'
     mov  rax, 1             ; sys_write
     mov  rdi, 1             ; stdout
-    lea  rsi, [rsp]
+    lea  rsi, [rsp]         ; load address of rsp into rsi
     mov  rdx, 1
     syscall
     jmp  .done
@@ -57,7 +57,7 @@ print_num:
 
 .push_digits:
     test rax, rax
-    jz   .pop_digits
+    jz   .pop_digits    ; jump if test zero
     xor  rdx, rdx
     mov  rcx, 10
     div  rcx                ; rdx = rax % 10, rax = rax / 10
@@ -117,6 +117,9 @@ _start:
     mov  rsi, 5
     call sum_two_nums
     ; rax has sum
+    
+    mov rdi, rax
+    call print_num
 
     call exit_program
 
