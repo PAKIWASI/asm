@@ -1,6 +1,3 @@
-
-
-
 section .data
     ; Newline character for output
     newline        db  0x0a
