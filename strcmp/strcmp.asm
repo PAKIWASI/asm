@@ -1,6 +1,5 @@
 section .data
-    ; db: define byte
-    newline db 0x0a 
+    newline db 0x0a ; db: define byte
 
     msg_1 db "please enter first string: ", 0x0a, 0 ; newline + null terminated
     msg_1_len equ $ - msg_1
@@ -36,6 +35,7 @@ print_str:
     pop  rbp
     ret
 
+; TODO: make a print_cstr
 
 
 ; rdi: buffer ptr
@@ -58,6 +58,12 @@ read_str:
     ret
 
 
+; rdi: str_1
+; rsi: str_2
+; rax has result
+strcmp:
+
+
 
 _start:
     push rbp    
@@ -70,6 +76,10 @@ _start:
 
     mov rdi, str_1
     call read_str
+    ; rax has number of bytes read
+    mov rdi, str_1
+    mov rsi, rax
+    call print_str
 
 
     mov rdi, msg_2
@@ -78,14 +88,9 @@ _start:
 
     mov rdi, str_2
     call read_str
-
-
-    mov rdi, str_1
-    mov rsi, 256
-    call print_str
     
     mov rdi, str_2
-    mov rsi, 256
+    mov rsi, rax
     call print_str
 
 

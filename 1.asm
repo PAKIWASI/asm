@@ -97,7 +97,7 @@
 ;    push rax
 ;    ; is exactly equivalent to:
 ;    sub rsp, 8
-;    mov [rsp], rax
+;    mov [rsp], rax     ; rsp points to an address, mov val in rax into that address
 ;
 ;  POP   — reads value from [RSP], then increments RSP by 8
 ;
@@ -269,7 +269,7 @@ section .data
 ; =============================================================================
 section .bss
     ; A buffer to convert a number to its ASCII digit character
-    digit_buf   resb 1
+    digit_buf   resb 1  ; reserve a byte
 
 
 ; =============================================================================
