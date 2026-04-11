@@ -30,26 +30,44 @@ print_str:
     pop     rbp
     ret
 
+
 ; rdi: num (unsigned, 64-bit)
 print_num:
     push    rbp
     mov     rbp, rsp
 
-    ; 303
-    ; 303 % 10 = 3
-    ; 303 / 10 = 30
+    ; store the address where first digit will be pushed
+    lea     rcx, [rsp]
 
-.loop:
+    ; in 64bit, div divides 128 bit number [rdx | rax]
+    ; answer is in rax, remainer in rdx
     mov     rax, rdi    ; dividend (low 64 bits)
-    xor     rdx, rdx    ; dividend (high 64 bits) = 0, MUST clear this
     mov     rsi, 10     ; divisor
+.div_loop:
+    xor     rdx, rdx    ; dividend (high 64 bits) = 0, MUST clear this
     div     rsi         ; rax = rax / 10, rdx = rax % 10
 
+    ; pushing digits onto stack in reverse order
+    add     rdx, '0'    ; rdx has num 0-9, convert to ascii
+    push    rdx
+
+    ; continue loop
     test    rax, rax
-    jnz     .loop       ; why it's a loop label if we manually have to call it everytime?
-                        ; shouldn't this be the exit statement?
+    jnz     .div_loop
 
+    ; div loop ended
+    ; now to print the ascii digits
 
+    ; TEST: print the reverse ones
+
+    mov     rdi, rsp            ; buffer ptr
+    mov     rsi, rcx            ; old rsp
+    sub     rsi, rdi            ; length = bytes pushed
+    call    print_str
+
+    mov     rsp, rbp
+    pop     rbp
+    ret
 
 
 ; rdi: first num
@@ -68,8 +86,6 @@ sum_two_nums:
 
 
 _start:
-    push    rbp
-    mov     rbp, rsp
 
     mov     rdi, hello_wrld
     mov     rsi, hello_wrld_len
@@ -82,6 +98,9 @@ _start:
     
     mov     rdi, rax
     call    print_num
+    mov     rdi, newline
+    mov     rsi, 1
+    call    print_str
 
 
 ; called automatically
