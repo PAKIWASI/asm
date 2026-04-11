@@ -1,9 +1,11 @@
 section .data
     ; Newline character for output
-    newline        db  0x0a
+    newline        db  10
 
-    hello_wrld     db  "Hello World", 0x0a
+    hello_wrld     db  "Hello World", 10
     hello_wrld_len equ $ - hello_wrld
+
+    minus_sign  db  '-'
 
 
 section .bss
@@ -31,11 +33,24 @@ print_str:
     ret
 
 
-; rdi: num (unsigned, 64-bit)
+; rdi: num
 print_num:
     push    rbp
     mov     rbp, rsp
 
+    ; test does AND sets sign flag
+    test    rdi, rdi        ; rdi AND rdi = rdi, but SF was set
+    jns     .positive       ; jump if not signed (positive or zero)
+
+    ; negative path
+    push    rdi             ; save original value
+    mov     rdi, minus_sign ; print '-'
+    mov     rsi, 1
+    call    print_str
+    pop     rdi             ; restore original value
+    neg     rdi             ; negate: e.g. -42 becomes 42
+
+.positive:
     ; store the address where first digit will be pushed
     lea     rcx, [rsp]
 
@@ -57,8 +72,6 @@ print_num:
 
     ; div loop ended
     ; now to print the ascii digits
-
-    ; TEST: print the reverse ones
 
     mov     rdi, rsp            ; buffer ptr
     mov     rsi, rcx            ; old rsp
@@ -91,8 +104,8 @@ _start:
     mov     rsi, hello_wrld_len
     call    print_str
 
-    mov     rdi, 10
-    mov     rsi, 5
+    mov     rdi, -1000
+    mov     rsi, 4
     call    sum_two_nums
     ; rax has sum
     
